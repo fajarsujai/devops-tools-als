@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  paycloud-fe-webadmin:
+    image: ${IMAGE_REGISTRY}
+    restart: unless-stopped
+    env_file: .env
+    container_name: ${PROJECT_NAME}
+    ports:
+      - "${PORT1}:${PORT1}"

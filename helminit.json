@@ -1,0 +1,8 @@
+{
+    "IMAGE": "image_name",
+    "CLUSTER": "cluster_name",
+    "PROJECT": "project_name",
+    "DEPLOYMENT": "deployment_name",
+    "NODETYPE": "nodetype",
+    "PORT": "80"
+}
