@@ -3,5 +3,6 @@
     "DEPLOYMENT": "service_name",
     "PROJECT": "project_name",
     "NODETYPE": "back/front",
-    "PORT": "80"
+    "PORT": "80",
+    "CHARTNAME": "chartgo"
 }
