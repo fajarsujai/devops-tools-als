@@ -1,8 +1,6 @@
 {
-    "SERVICE_NAME": "image_name",
-    "CLUSTER": "cluster_name",
+    "SERVICE_NAME": "service_name",
     "PROJECT": "project_name",
-    "DEPLOYMENT": "deployment_name",
-    "NODETYPE": "nodetype",
+    "NODETYPE": "back/front",
     "PORT": "80"
 }
