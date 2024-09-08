@@ -1,5 +1,5 @@
 {
-    "IMAGE": "image_name",
+    "SERVICE_NAME": "image_name",
     "CLUSTER": "cluster_name",
     "PROJECT": "project_name",
     "DEPLOYMENT": "deployment_name",
