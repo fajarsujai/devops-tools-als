@@ -33,27 +33,27 @@ pipeline {
         }
 
 
-        // stage('CD STAGE') {
-        //     when {
-        //         anyOf {
-        //             branch 'master'
-        //             branch 'develop'
-        //             branch 'staging'
-        //             branch 'development'
-        //         }
-        //     }
-        //     steps {
+        stage('CD STAGE') {
+            when {
+                anyOf {
+                    branch 'master'
+                    branch 'develop'
+                    branch 'staging'
+                    branch 'development'
+                }
+            }
+            steps {
 
-        //         script {
-        //             echo "${env.BRANCH_NAME}"
-        //         }
+                script {
+                    echo "${env.BRANCH_NAME}"
+                }
                 
-        //         sh label: "${env.BRANCH_NAME}", script:
-        //         """
-        //         ldhelmupgrade ${env.BRANCH_NAME}-${PROJECT}
-        //         """
-        //     }
+                sh label: "${env.BRANCH_NAME}", script:
+                """
+                ldhelmupgrade ${env.BRANCH_NAME}
+                """
+            }
 
-        // }
+        }
     }
 }
