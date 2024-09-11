@@ -50,7 +50,7 @@ pipeline {
                 
                 sh label: "${env.BRANCH_NAME}", script:
                 """
-                ldhelmupgrade ${env.BRANCH_NAME}
+                lhelmupgrade ${env.BRANCH_NAME}
                 """
             }
 
