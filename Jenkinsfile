@@ -27,7 +27,7 @@ pipeline {
                 sh label: "${env.BRANCH_NAME}", script:
                 """
                 ldbuild ${env.BRANCH_NAME}
-                ldrease
+                ldrelease
                 """
             }
         }
