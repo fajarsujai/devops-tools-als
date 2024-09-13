@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  paycloud-fe-webadmin:
+  app:
     image: ${IMAGE_REGISTRY}
     restart: unless-stopped
     env_file: .env
