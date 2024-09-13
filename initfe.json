@@ -2,5 +2,6 @@
     "SERVICE_NAME": "service_name",
     "DEPLOYMENT": "service_name",
     "PROJECT": "project_name",
-    "PORT": "80"
+    "FORWARD_PORT": "8001",
+    "CONTAINER_PORT": "80"
 }
