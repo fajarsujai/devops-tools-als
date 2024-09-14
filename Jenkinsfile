@@ -26,8 +26,8 @@ pipeline {
                 
                 sh label: "${env.BRANCH_NAME}", script:
                 """
-                ldbuild ${env.BRANCH_NAME}
-                ldrelease
+                lbebuild ${env.BRANCH_NAME}
+                lberelease
                 """
             }
         }
