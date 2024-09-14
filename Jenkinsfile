@@ -56,4 +56,26 @@ pipeline {
 
         }
     }
+
+
+//POST============================================================
+    post {
+        failure {
+            // echo "Failed stage name: ${FAILED_STAGE}"
+            // notif failure
+            sh label: 'notif failure', script:
+            """
+                notif fail "STEP ==> ${FAILED_STAGE} #${env.JOB_NAME} , Job No #${env.BUILD_NUMBER} is FAILURE ==> ${env.BUILD_URL}"
+            """
+        //
+        }
+        success {
+            // notif success
+            sh label: 'notif success', script:
+            """
+                notif success "${env.JOB_NAME} , Job No #${env.BUILD_NUMBER} is SUCCESS"
+            """
+        }
+
+    }
 }
