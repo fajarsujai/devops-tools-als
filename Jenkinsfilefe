@@ -49,8 +49,13 @@ pipeline {
                 
                 sh label: "${env.BRANCH_NAME}", script:
                 """
-                pwd
-                whoami
+                staweb
+                cd ${env.JOB_NAME}
+                git restore .
+                git checkout ${env.BRANCH_NAME}
+                git pull origin ${env.BRANCH_NAME}
+                lfesetinit staging
+                docker compose up -d
                 """
             }
 
