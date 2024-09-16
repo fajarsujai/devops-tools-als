@@ -56,6 +56,30 @@ pipeline {
             }
 
         }
+
+
+        stage('CLEAN UP IMAGE') {
+            when {
+                anyOf {
+                    branch 'master'
+                    branch 'develop'
+                    branch 'staging'
+                    branch 'development'
+                }
+            }
+            steps {
+
+                script {
+                    echo "${env.BRANCH_NAME}"
+                }
+                
+                sh label: "${env.BRANCH_NAME}", script:
+                """
+                docker system prune -af
+                """
+            }
+
+        }
     }
 
 
