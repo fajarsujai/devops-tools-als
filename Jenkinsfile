@@ -6,7 +6,7 @@ properties(
 def FAILED_STAGE
 
 pipeline {
-    // agent { label "master" }
+    agent { label "master" }
     agent any
     stages {
         stage('CI STAGE') {
