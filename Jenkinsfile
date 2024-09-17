@@ -6,9 +6,38 @@ properties(
 def FAILED_STAGE
 
 pipeline {
-    agent { label "master" }
-    agent any
+    agent { 
+        node {
+            label "master" 
+        }  
+    }
     stages {
+                stage('INFORMATION STAGE') {
+            when {
+                anyOf {
+                    branch 'master'
+                    branch 'develop'
+                    branch 'staging'
+                    branch 'development'
+                }
+            }
+            steps {
+
+                script {
+                    echo "${env.BRANCH_NAME}"
+                }
+                
+                sh label: "${env.BRANCH_NAME}", script:
+                """
+                echo "Node Name: ${env.NODE_NAME}"
+                echo "Node Label: ${env.NODE_LABEL}"
+                echo "Workspace: ${env.WORKSPACE}"
+                echo "Job URL: ${env.JOB_URL}"
+                echo "Job URL: ${env.GIT_COMMIT}"
+                """
+            }
+        }
+        
         stage('CI STAGE') {
             when {
                 anyOf {
