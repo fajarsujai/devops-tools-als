@@ -75,7 +75,6 @@ pipeline {
                 """
                 lclone helm-template ${env.BRANCH_NAME}
                 lbesetimage ${env.BRANCH_NAME}
-                lbesetsecret ${env.BRANCH_NAME}
                 cd helm-template
                 git commit -am "${env.GIT_COMMIT}"
                 git push origin ${env.BRANCH_NAME}
