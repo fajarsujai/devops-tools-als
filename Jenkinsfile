@@ -73,9 +73,9 @@ pipeline {
                 
                 sh label: "${env.BRANCH_NAME}", script:
                 """
-                lclone helm-template ${env.BRANCH_NAME}
+                lclone gitops ${env.BRANCH_NAME}
                 lbesetimage ${env.BRANCH_NAME}
-                cd helm-template
+                cd gitops
                 git commit -am "${env.GIT_COMMIT}"
                 git push origin ${env.BRANCH_NAME}
                 """
