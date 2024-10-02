@@ -67,17 +67,12 @@ pipeline {
             }
             steps {
                 script {
-                    echo "${BRANCH_NAME}"
-                    if (TAG_NAME == null || TAG_NAME.trim() == ''){
-                        
-                        sh "lclone gitops ${BRANCH_NAME}"
-                        sh "lbesetimage ${BRANCH_NAME}"
-                        sh "cd gitops"
-                        sh 'git commit -am "${GIT_COMMIT}"'
-                        sh "git push origin ${BRANCH_NAME}"
-                    }else if(BRANCH_NAME == 'staging'){
-                        echo "Baru sampai push dulu"
-                    }
+                    echo "${BRANCH_NAME}"                    
+                    sh "lclone gitops ${BRANCH_NAME}"
+                    sh "lbesetimage ${BRANCH_NAME}"
+                    sh "cd gitops"
+                    sh 'git commit -am "${GIT_COMMIT}"'
+                    sh "git push origin ${BRANCH_NAME}"
                 }
             }
 
