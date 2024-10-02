@@ -9,6 +9,11 @@ pipeline {
             label "master" 
         }  
     }
+
+    environment {
+        BRANCH_NAME = ${env.BRANCH_NAME}
+        TAG_NAME = ${env.TAG_NAME}
+    }
     stages {
         
         stage('CI STAGE') {
@@ -22,19 +27,18 @@ pipeline {
             }
             steps {
                 script {
-                    echo "${env.BRANCH_NAME}"
-                    def branchName = ${env.BRANCH_NAME}
-                    def tagName = ${env.TAG_NAME}
+                    echo "${BRANCH_NAME}"
 
-                    if (tagName == null || tagName.trim() == ''){
-                        sh 'lbebuild ${env.BRANCH_NAME}'
-                        sh 'lberelease'
-                    }else if(branchName == 'staging') {
-                        sh 'lbedockerpull'
-                        sh 'lbedockertag ${tagName}'
-                        sh 'lbedockertagpush ${tagName}'
+
+                    if (TAG_NAME == null || TAG_NAME.trim() == ''){
+                        sh "lbebuild ${BRANCH_NAME}"
+                        sh "lberelease"
+                    }else if(BRANCH_NAME == 'staging') {
+                        sh "lbedockerpull"
+                        sh "lbedockertag ${TAG_NAME}"
+                        sh "lbedockertagpush ${TAG_NAME}"
                     }else {
-                        echo "nama branch ${branchName}"
+                        echo "nama branch ${BRANCH_NAME}"
                     }
                 }
             }
@@ -51,10 +55,10 @@ pipeline {
             steps {
 
                 script {
-                    echo "${env.BRANCH_NAME}"
+                    echo "${BRANCH_NAME}"
                 }
                 
-                sh label: "${env.BRANCH_NAME}", script:
+                sh label: "${BRANCH_NAME}", script:
                 """
                 docker system prune -af
                 """
@@ -73,20 +77,20 @@ pipeline {
             }
             steps {
                 script {
-                    echo "${env.BRANCH_NAME}"
-                    def branchName = ${env.BRANCH_NAME}
-                    def tagName = ${env.TAG_NAME}
+                    echo "${BRANCH_NAME}"
+                    def BRANCH_NAME = ${BRANCH_NAME}
+                    def TAG_NAME = ${TAG_NAME}
 
-                    if (tagName == null || tagName.trim() == ''){
-                        sh 'lclone gitops ${env.BRANCH_NAME}'
-                        sh 'lbesetimage ${env.BRANCH_NAME}'
-                        sh 'cd gitops'
-                        sh 'git commit -am "${env.GIT_COMMIT}"'
-                        sh 'git push origin ${env.BRANCH_NAME}'
-                    }else if(branchName == 'staging'){
+                    if (TAG_NAME == null || TAG_NAME.trim() == ''){
+                        sh "lclone gitops ${BRANCH_NAME}"
+                        sh "lbesetimage ${BRANCH_NAME}"
+                        sh "cd gitops"
+                        sh 'git commit -am "${GIT_COMMIT}"'
+                        sh "git push origin ${BRANCH_NAME}"
+                    }else if(BRANCH_NAME == 'staging'){
                         echo "Baru sampai push dulu"
                     }else {
-                        echo "nama branch ${branchName}"
+                        echo "nama branch ${BRANCH_NAME}"
                     }
                 }
             }
