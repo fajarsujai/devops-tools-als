@@ -23,22 +23,22 @@ pipeline {
             steps {
                 script {
                     echo "${BRANCH_NAME}"
-                    sh "lbedockerpull"
-                    sh "lbedockertag ${TAG_NAME}"
-                    sh "lbedockertagpush ${TAG_NAME}"
+                    sh "lbebuild ${BRANCH_NAME}"
+                    sh "lberelease"
                 }
             }
         }
 
-        stage('CI STAGE (STA)') {
+        stage('CI Stage (tag)') {
             when {
                 buildingTag()
             }
             steps {
                 script {
                     echo "${TAG_NAME}"
-                    sh "lbebuild ${BRANCH_NAME}"
-                    sh "lberelease"
+                    sh "lbedockerpull"
+                    sh "lbedockertag ${TAG_NAME}"
+                    sh "lbedockertagpush ${TAG_NAME}"
                 }
             }
         }
