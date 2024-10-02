@@ -23,15 +23,18 @@ pipeline {
             steps {
                 script {
                     echo "${env.BRANCH_NAME}"
+                    def branchName = env.BRANCH_NAME
                     def tagName = env.TAG_NAME
 
                     if (tagName == null || tagName.trim() == ''){
                         lbebuild ${env.BRANCH_NAME}
                         lberelease
-                    }else{
+                    }else if(branchName == 'staging') {
                         lbedockerpull
                         lbedockertag ${tagName}
                         lbedockertagpush ${tagName}
+                    }else {
+                        echo "nama branch ${branchName}"
                     }
                 }
             }
@@ -71,6 +74,7 @@ pipeline {
             steps {
                 script {
                     echo "${env.BRANCH_NAME}"
+                    def branchName = env.BRANCH_NAME
                     def tagName = env.TAG_NAME
 
                     if (tagName == null || tagName.trim() == ''){
@@ -79,8 +83,10 @@ pipeline {
                         cd gitops
                         git commit -am "${env.GIT_COMMIT}"
                         git push origin ${env.BRANCH_NAME}
-                    }else{
+                    }else if(branchName == 'staging'){
                         echo "Baru sampai push dulu"
+                    }else {
+                        echo "nama branch ${branchName}"
                     }
                 }
             }
