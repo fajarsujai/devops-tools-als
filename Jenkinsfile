@@ -23,8 +23,8 @@ pipeline {
             steps {
                 script {
                     echo "${env.BRANCH_NAME}"
-                    def branchName = env.BRANCH_NAME
-                    def tagName = env.TAG_NAME
+                    def branchName = ${env.BRANCH_NAME}
+                    def tagName = ${env.TAG_NAME}
 
                     if (tagName == null || tagName.trim() == ''){
                         lbebuild ${env.BRANCH_NAME}
@@ -74,8 +74,8 @@ pipeline {
             steps {
                 script {
                     echo "${env.BRANCH_NAME}"
-                    def branchName = env.BRANCH_NAME
-                    def tagName = env.TAG_NAME
+                    def branchName = ${env.BRANCH_NAME}
+                    def tagName = ${env.TAG_NAME}
 
                     if (tagName == null || tagName.trim() == ''){
                         lclone gitops ${env.BRANCH_NAME}
