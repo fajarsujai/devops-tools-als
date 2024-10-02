@@ -14,8 +14,8 @@ pipeline {
         BRANCH_NAME = "${env.BRANCH_NAME}"
         TAG_NAME = "${env.TAG_NAME}"
     }
+
     stages {
-        
         stage('CI Stage (staging)') {
             when {
                 branch 'staging'
@@ -23,18 +23,9 @@ pipeline {
             steps {
                 script {
                     echo "${BRANCH_NAME}"
-
-
-                    if (TAG_NAME == null || TAG_NAME.trim() != ''){
-                        sh "lbedockerpull"
-                        sh "lbedockertag ${TAG_NAME}"
-                        sh "lbedockertagpush ${TAG_NAME}"
-                    }else if(BRANCH_NAME == 'staging') {
-                        sh "lbebuild ${BRANCH_NAME}"
-                        sh "lberelease"
-                    }else {
-                        echo "nama branch ${BRANCH_NAME}"
-                    }
+                    sh "lbedockerpull"
+                    sh "lbedockertag ${TAG_NAME}"
+                    sh "lbedockertagpush ${TAG_NAME}"
                 }
             }
         }
@@ -49,6 +40,7 @@ pipeline {
                     sh "lbedockerpull"
                     sh "lbedockertag ${TAG_NAME}"
                     sh "lbedockertagpush ${TAG_NAME}"
+                }
             }
         }
 
@@ -113,4 +105,5 @@ pipeline {
         }
 
     }
+
 }
