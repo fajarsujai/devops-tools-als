@@ -21,16 +21,19 @@ pipeline {
                 }
             }
             steps {
-
                 script {
                     echo "${env.BRANCH_NAME}"
+                    def tagName = env.TAG_NAME
+
+                    if (tagName == null || tagName.trim() == ''){
+                        lbebuild ${env.BRANCH_NAME}
+                        lberelease
+                    }else{
+                        lbedockerpull
+                        lbedockertag ${tagName}
+                        lbedockertagpush ${tagName}
+                    }
                 }
-                
-                sh label: "${env.BRANCH_NAME}", script:
-                """
-                lbebuild ${env.BRANCH_NAME}
-                lberelease
-                """
             }
         }
         stage('DELETE IMAGE') {
@@ -66,25 +69,23 @@ pipeline {
                 }
             }
             steps {
-
                 script {
                     echo "${env.BRANCH_NAME}"
+                    def tagName = env.TAG_NAME
+
+                    if (tagName == null || tagName.trim() == ''){
+                        lclone gitops ${env.BRANCH_NAME}
+                        lbesetimage ${env.BRANCH_NAME}
+                        cd gitops
+                        git commit -am "${env.GIT_COMMIT}"
+                        git push origin ${env.BRANCH_NAME}
+                    }else{
+                        echo "Baru sampai push dulu"
+                    }
                 }
-                
-                sh label: "${env.BRANCH_NAME}", script:
-                """
-                lclone gitops ${env.BRANCH_NAME}
-                lbesetimage ${env.BRANCH_NAME}
-                cd gitops
-                git commit -am "${env.GIT_COMMIT}"
-                git push origin ${env.BRANCH_NAME}
-                """
             }
 
         }
-
-
-
     }
 
 
