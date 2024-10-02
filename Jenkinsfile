@@ -27,12 +27,12 @@ pipeline {
                     def tagName = ${env.TAG_NAME}
 
                     if (tagName == null || tagName.trim() == ''){
-                        lbebuild ${env.BRANCH_NAME}
-                        lberelease
+                        sh 'lbebuild ${env.BRANCH_NAME}'
+                        sh 'lberelease'
                     }else if(branchName == 'staging') {
-                        lbedockerpull
-                        lbedockertag ${tagName}
-                        lbedockertagpush ${tagName}
+                        sh 'lbedockerpull'
+                        sh 'lbedockertag ${tagName}'
+                        sh 'lbedockertagpush ${tagName}'
                     }else {
                         echo "nama branch ${branchName}"
                     }
@@ -78,11 +78,11 @@ pipeline {
                     def tagName = ${env.TAG_NAME}
 
                     if (tagName == null || tagName.trim() == ''){
-                        lclone gitops ${env.BRANCH_NAME}
-                        lbesetimage ${env.BRANCH_NAME}
-                        cd gitops
-                        git commit -am "${env.GIT_COMMIT}"
-                        git push origin ${env.BRANCH_NAME}
+                        sh 'lclone gitops ${env.BRANCH_NAME}'
+                        sh 'lbesetimage ${env.BRANCH_NAME}'
+                        sh 'cd gitops'
+                        sh 'git commit -am "${env.GIT_COMMIT}"'
+                        sh 'git push origin ${env.BRANCH_NAME}'
                     }else if(branchName == 'staging'){
                         echo "Baru sampai push dulu"
                     }else {
