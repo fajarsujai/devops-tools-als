@@ -37,9 +37,8 @@ pipeline {
             steps {
                 script {
                     echo "${TAG_NAME}"
-                    sh "lbedockerpull"
-                    sh "lbedockertag ${TAG_NAME}"
-                    sh "lbedockertagpush ${TAG_NAME}"
+                    sh "lbebuild ${BRANCH_NAME}"
+                    sh "lberelease"
                 }
             }
         }
