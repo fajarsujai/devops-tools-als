@@ -52,24 +52,29 @@ pipeline {
 
         }
 
-        stage('CD Stag (staging)') {
+        stage('CD Stage (staging)') {
             when {
                 branch 'staging'
             }
             steps {
                 script {
                     echo "${BRANCH_NAME}"                    
-                    sh "lclone gitops ${BRANCH_NAME}"
-                    sh "lbesetimage ${BRANCH_NAME}"
-                    sh "cd gitops"
-                    sh 'git commit -am "${GIT_COMMIT}"'
-                    sh "git push origin ${BRANCH_NAME}"
+
                 }
+
+                sh label: "${env.BRANCH_NAME}", script:
+                """
+                    lclone gitops ${BRANCH_NAME}
+                    lbesetimage ${BRANCH_NAME}
+                    cd gitops
+                    git commit -am "${GIT_COMMIT}"
+                    git push origin ${BRANCH_NAME}
+                """
             }
 
         }
 
-        stage('CD Stag (tag)') {
+        stage('CD Stage (tag)') {
             when {
                 buildingTag()
             }
