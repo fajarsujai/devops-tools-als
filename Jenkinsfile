@@ -16,21 +16,16 @@ pipeline {
     }
     stages {
         
-        stage('CI STAGE') {
+        stage('CI Stage (staging)') {
             when {
-                anyOf {
-                    branch 'master'
-                    branch 'develop'
-                    branch 'staging'
-                    branch 'development'
-                }
+                branch 'staging'
             }
             steps {
                 script {
                     echo "${BRANCH_NAME}"
 
 
-                    if (TAG_NAME != null || TAG_NAME.trim() != ''){
+                    if (TAG_NAME == null || TAG_NAME.trim() != ''){
                         sh "lbedockerpull"
                         sh "lbedockertag ${TAG_NAME}"
                         sh "lbedockertagpush ${TAG_NAME}"
@@ -43,55 +38,59 @@ pipeline {
                 }
             }
         }
-        stage('DELETE IMAGE') {
+
+        stage('CI STAGE (STA)') {
             when {
-                anyOf {
-                    branch 'master'
-                    branch 'develop'
-                    branch 'staging'
-                    branch 'development'
-                }
+                buildingTag()
             }
             steps {
-
                 script {
-                    echo "${BRANCH_NAME}"
+                    echo "${TAG_NAME}"
+                    sh "lbedockerpull"
+                    sh "lbedockertag ${TAG_NAME}"
+                    sh "lbedockertagpush ${TAG_NAME}"
+            }
+        }
+
+        stage('Prune Docker') {
+            steps {
+                script {
+                    sh "docker system prune -af"
                 }
-                
-                sh label: "${BRANCH_NAME}", script:
-                """
-                docker system prune -af
-                """
             }
 
         }
 
-        stage('CD STAGE') {
+        stage('CD Stag (staging)') {
             when {
-                anyOf {
-                    branch 'master'
-                    branch 'develop'
-                    branch 'staging'
-                    branch 'development'
-                }
+                branch 'staging'
             }
             steps {
                 script {
                     echo "${BRANCH_NAME}"
-                    def BRANCH_NAME = ${BRANCH_NAME}
-                    def TAG_NAME = ${TAG_NAME}
-
-                    if (TAG_NAME != null || TAG_NAME.trim() != ''){
-                        echo "Baru sampai push dulu"
-                    }else if(BRANCH_NAME == 'staging'){
+                    if (TAG_NAME == null || TAG_NAME.trim() == ''){
+                        
                         sh "lclone gitops ${BRANCH_NAME}"
                         sh "lbesetimage ${BRANCH_NAME}"
                         sh "cd gitops"
                         sh 'git commit -am "${GIT_COMMIT}"'
                         sh "git push origin ${BRANCH_NAME}"
-                    }else {
-                        echo "nama branch ${BRANCH_NAME}"
+                    }else if(BRANCH_NAME == 'staging'){
+                        echo "Baru sampai push dulu"
                     }
+                }
+            }
+
+        }
+
+        stage('CD Stag (tag)') {
+            when {
+                buildingTag()
+            }
+            steps {
+                script {
+                    echo "${TAG_NAME}"
+                    echo "Baru sampai push dulu"
                 }
             }
 
